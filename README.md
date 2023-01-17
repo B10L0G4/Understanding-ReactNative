@@ -13,4 +13,37 @@ pode ser inserido na aplicação completa ou em partes dela.
 
 *SPA* ( single page applicatinon ) : uma página que renderiza todas as páginas do sistema. Usado na aplicação inteira. (mais utilizada atualimente) <br>
 *CDN* () : usado em parte do sistema (pouco utilizado atualmente)
+##
+
+Criando Projeto do 0
+
+Comando inicial : npx create-react-app nomeDoProjeto
+
+Depois de criado o projeto 
+##
+Comando úteis 
+##
+npm start
+    Starts the development server.
+    Inicia o servidot de desenvolvimento
+
+npm run build
+    Bundles the app into static files for production.
+    Agrupa o app em arquivos estaticos para produção 
+
+npm test
+    Starts the test runner.
+    Inicia o executor de testes 
+
+npm run eject
+    Removes this tool and copies build dependencies, configuration files
+    and scripts into the app directory. If you do this, you can’t go back!
+
+    Remover esta ferramenta e copia as dependendias de buils , arquivos de configuração e scripts dentro do diretorio do app .Se vc fizer isso não podera retornar.
+
+To initialize the project follow the commands <br>
+Para inicializar o projeto utilizar os comandos 
+
+  cd hello-world <br> - change to a folder of project (entra na pasta do projeto )
+  npm start - initialize the project (inicializa o projeto )
 
