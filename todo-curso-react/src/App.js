@@ -10,31 +10,52 @@ function App() {
   const [todos,setTodos] = useState([]);
   const [loading, setLoading] = useState(false);
 
-const handleSubmit = (e) =>{
+const handleSubmit = (e) => {
   e.preventDefault();
-  console.log('Enviar')
-}
+  const todo = {
+    id : Math.random(),
+    title,
+    time,
+    done:false
+  };
+  console.log(todo)
+  setTitle("");
+  setTime("");
+};
+
 
   return (
     <div className="App">
       <div className="todo-header">
         <h1>React To-Do</h1>
+        <FirstComponet> </FirstComponet>
       </div>
       <div className="form-todo">
         <p>Insira a sua proxima tarefa </p>
         <form onSubmit={handleSubmit}>
           <div className="form-control">
-            <label htmlFor='title'>O que vc vai fazer</label>
+            <label htmlFor='time'>Duração: </label>
             <input 
             type="text" 
-            value="title"
-            placeholder="Titulo da Tarefa" 
-            onChange = {(e) => setTitle(e.target.valu)}
-            value = {title}
+            name="time"
+            placeholder="Tempo estimado " 
+            onChange = {(e) => setTime(e.target.value)}
+            value = {time} 
             required
             />
           </div>
-          <input type="submit" value="Enviar"/>
+          <div className="form-control">
+            <label htmlFor='title'>O que vc vai fazer</label>
+            <input 
+            type="text" 
+            name="title"
+            placeholder="Titulo da Tarefa" 
+            onChange = {(e) => setTitle(e.target.value)}
+            value = {title} 
+            required
+            />
+          </div>
+          <input type="submit" value="Criar tarefa "/>
         </form>
       </div>
       <div className="list-todo">
