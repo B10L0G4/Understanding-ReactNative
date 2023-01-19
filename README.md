@@ -47,3 +47,17 @@ Para inicializar o projeto utilizar os comandos
   cd hello-world <br> - change to a folder of project (entra na pasta do projeto )
   npm start - initialize the project (inicializa o projeto )
 
+##
+
+Projeto TO-DO
+
+Dependencias necessarias 
+
+- json-server :  simula uma API, permite fazer requiseições assincronas com um servidor ficticio
+
+- react-icons : icones 
+
+Criar Script para criar Json Server 
+
+-- "server":"json-server --watch data/d.json --port 5000"
+-- antes de rodar o app, criar a pasta data e um arquivi db.json (criar um arquivo no padrão json,com um lista vazia)

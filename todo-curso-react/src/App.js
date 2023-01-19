@@ -1,4 +1,4 @@
-import FirstComponet from './components/FirstComponentes';
+//import FirstComponet from './components/FirstComponentes';
 import './App.css';
 import {useState,useEffect } from "react";
 import {BsTrash ,BsBookmarkCheck, BsBookmarkCheckFill} from "react-icons/bs"
@@ -10,46 +10,59 @@ function App() {
   const [todos,setTodos] = useState([]);
   const [loading, setLoading] = useState(false);
 
-useEffect(()=> {
-  const loadData = async()=>{
-    setLoading(true)
-    const res = await fetch(API + "/todos")
-    .then((res)=>res.json())
-    .then((data)=> data)
-    .catch((err)=> console.log(err));
+  useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
 
-    setLoading(false);
-    setTodos(res);
-  };
-  //loadData();
-});
+      const res = await fetch(API + "/todos")
+        .then((res) => res.json())
+        .then((data) => data)
+        .catch((err) => err);
 
+      setLoading(false);
 
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  const todo = {
-    id : Math.random(),
-    title,
-    time,
-    done:false,
-  };
-  await fetch(API + "/todos", {
-    method: "POST",
-    body :JSON.stringify(todo),
-    headers: {
-      "Content-Type": "application/json",
-    },
+      setTodos(res);
+    };
   });
 
-  setTodos((prevState) => [...prevState, todo]);
-  setTitle("");
-  setTime("");
-};
-if(loading){
-  return <p>Carregando ...</p>
-}
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const todo = {
+      id: Math.random(),
+      title,
+      time,
+      done: false,
+    };
+
+    await fetch(API + "/todos", {
+      method: "POST",
+      body: JSON.stringify(todo),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    setTodos((prevState) => [...prevState, todo]);
+    setTitle("");
+    setTime("");
+  }
+  const handleDone = async (todo) => {
+    todo.done = !todo.done;
+
+    const data = await fetch(API + "/todos/" + todo.id, {
+      method: "PUT",
+      body: JSON.stringify(todo),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    setTodos((prevState) =>
+      prevState.map((t) => (t.id === data.id ? (t = data) : t))
+    );
+  };
 const handleDelete = async (id) => {
   await fetch(API + "/todos" + id, {
     method: "DELETE"
@@ -58,34 +71,37 @@ const handleDelete = async (id) => {
 
 }
 
+
+if(loading){
+  return <p>Carregando ...</p>
+}
+
   return (
     <div className="App">
       <div className="todo-header">
         <h1>React To-Do</h1>
-        <FirstComponet> </FirstComponet>
       </div>
       <div className="form-todo">
-        <p>Insira a sua proxima tarefa </p>
+        <h2>Insira a sua proxima tarefa </h2>
         <form onSubmit={handleSubmit}>
           <div className="form-control">
-            <label htmlFor='time'>Duração: </label>
+            <label htmlFor='title'>O que vc vai fazer: </label>
             <input 
             type="text" 
-            name="time"
-            placeholder="Tempo estimado " 
-            onChange = {(e) => setTime(e.target.value)}
-            value = {time} 
+            name="title"
+            placeholder="Título da Tarefa " 
+            onChange = {(e) => setTitle(e.target.value)}
+            value = {title} 
             required
             />
           </div>
           <div className="form-control">
-            <label htmlFor='title'>O que vc vai fazer</label>
+            <label htmlFor='time'>Duração </label>
             <input 
             type="text" 
-            name="title"
-            placeholder="Titulo da Tarefa" 
-            onChange = {(e) => setTitle(e.target.value)}
-            value = {title} 
+            placeholder="Tempo da Tarefa" 
+            onChange = {(e) => setTime(e.target.value)}
+            value = {time} 
             required
             />
           </div>
@@ -100,14 +116,13 @@ const handleDelete = async (id) => {
           <h3 className={todo.done ? "todo-done": ""}>{todo.title}</h3>
           <p>Duração: {todo.time}</p>
           <div className='actions'>
-            <span onClick={() => handleEdit}>
+            <span onClick={() => handleDone}>
               {!todo.done ? <BsBookmarkCheck/> : <BsBookmarkCheckFill/>}
             </span>
             <BsTrash onClick={()=>{handleDelete(todo.id)}}/>
             </div>
           </div>
         ))}
-
       </div>
     </div>
   );
