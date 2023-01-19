@@ -1,7 +1,7 @@
 import FirstComponet from './components/FirstComponentes';
 import './App.css';
 import {useState,useEffect } from "react";
-import {BsTrash , BsBookmarkCheck, BsBookmarkCheckfill} from "react-icons/bs"
+import {BsTrash ,BsBookmarkCheck, BsBookmarkCheckFill} from "react-icons/bs"
 
 const API = "http://localhost:5000";
 function App() {
@@ -10,19 +10,53 @@ function App() {
   const [todos,setTodos] = useState([]);
   const [loading, setLoading] = useState(false);
 
-const handleSubmit = (e) => {
+useEffect(()=> {
+  const loadData = async()=>{
+    setLoading(true)
+    const res = await fetch(API + "/todos")
+    .then((res)=>res.json())
+    .then((data)=> data)
+    .catch((err)=> console.log(err));
+
+    setLoading(false);
+    setTodos(res);
+  };
+  //loadData();
+});
+
+
+
+const handleSubmit = async (e) => {
   e.preventDefault();
   const todo = {
     id : Math.random(),
     title,
     time,
-    done:false
+    done:false,
   };
-  console.log(todo)
+  await fetch(API + "/todos", {
+    method: "POST",
+    body :JSON.stringify(todo),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  setTodos((prevState) => [...prevState, todo]);
   setTitle("");
   setTime("");
 };
+if(loading){
+  return <p>Carregando ...</p>
+}
 
+const handleDelete = async (id) => {
+  await fetch(API + "/todos" + id, {
+    method: "DELETE"
+  });
+  setTodos((prevState) => prevState.filter((todo)=> todo.id !== id));
+
+}
 
   return (
     <div className="App">
@@ -61,6 +95,19 @@ const handleSubmit = (e) => {
       <div className="list-todo">
         <h2>Lista de Tarefas </h2>
         {todos.length === 0 && <p>Não há tarefas</p>}
+        {todos.map((todo)=> (
+          <div className='todo' key={todo.id}>
+          <h3 className={todo.done ? "todo-done": ""}>{todo.title}</h3>
+          <p>Duração: {todo.time}</p>
+          <div className='actions'>
+            <span onClick={() => handleEdit}>
+              {!todo.done ? <BsBookmarkCheck/> : <BsBookmarkCheckFill/>}
+            </span>
+            <BsTrash onClick={()=>{handleDelete(todo.id)}}/>
+            </div>
+          </div>
+        ))}
+
       </div>
     </div>
   );
