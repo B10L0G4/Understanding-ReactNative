@@ -74,6 +74,7 @@ function App() {
     });
     setTodos((prevState) => prevState.filter((todo) => todo.id !== id));
   };
+//add buil 
 
   if (loading) {
    return <p>Carregando...</p>;
